@@ -43,9 +43,9 @@ class MTableEditCell extends React.Component {
       cellStyle = {
         ...cellStyle,
         ...this.props.cellEditable.cellStyle(
-          this.state.value,
-          this.props.rowData,
-          this.props.columnDef
+            this.state.value,
+            this.props.rowData,
+            this.props.columnDef
         ),
       };
     } else {
@@ -63,25 +63,26 @@ class MTableEditCell extends React.Component {
     }
   };
 
-  onApprove = () => {
-    this.setState({ isLoading: true }, () => {
+  onApprove = (value) => {
+    value = value || this.state.value;
+    this.setState({ value, isLoading: true }, () => {
       this.props.cellEditable
-        .onCellEditApproved(
-          this.state.value, // newValue
-          this.props.rowData[this.props.columnDef.field], // oldValue
-          this.props.rowData, // rowData with old value
-          this.props.columnDef // columnDef
-        )
-        .then(() => {
-          this.setState({ isLoading: false });
-          this.props.onCellEditFinished(
-            this.props.rowData,
-            this.props.columnDef
-          );
-        })
-        .catch((error) => {
-          this.setState({ isLoading: false });
-        });
+          .onCellEditApproved(
+              this.state.value, // newValue
+              this.props.rowData[this.props.columnDef.field], // oldValue
+              this.props.rowData, // rowData with old value
+              this.props.columnDef // columnDef
+          )
+          .then(() => {
+            this.setState({ isLoading: false });
+            this.props.onCellEditFinished(
+                this.props.rowData,
+                this.props.columnDef
+            );
+          })
+          .catch((error) => {
+            this.setState({ isLoading: false });
+          });
     });
   };
 
@@ -92,9 +93,9 @@ class MTableEditCell extends React.Component {
   renderActions() {
     if (this.state.isLoading) {
       return (
-        <div style={{ display: "flex", justifyContent: "center", width: 60 }}>
-          <CircularProgress size={20} />
-        </div>
+          <div style={{ display: "flex", justifyContent: "center", width: 60 }}>
+            <CircularProgress size={20} />
+          </div>
       );
     }
 
@@ -114,31 +115,33 @@ class MTableEditCell extends React.Component {
     ];
 
     return (
-      <this.props.components.Actions
-        actions={actions}
-        components={this.props.components}
-        size="small"
-      />
+        <this.props.components.Actions
+            actions={actions}
+            components={this.props.components}
+            size="small"
+        />
     );
   }
 
   render() {
     return (
-      <TableCell size={this.props.size} style={this.getStyle()} padding="none">
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <div style={{ flex: 1, marginRight: 4 }}>
-            <this.props.components.EditField
-              columnDef={this.props.columnDef}
-              value={this.state.value}
-              onChange={(value) => this.setState({ value })}
-              onKeyDown={this.handleKeyDown}
-              disabled={this.state.isLoading}
-              autoFocus
-            />
+        <TableCell size={this.props.size} style={this.getStyle()} padding="none">
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{ flex: 1, marginRight: 4 }}>
+              <this.props.components.EditField
+                  onApprove={this.onApprove}
+                  onCancel={this.onCancel}
+                  columnDef={this.props.columnDef}
+                  value={this.state.value}
+                  onChange={(value) => this.setState({ value })}
+                  onKeyDown={this.handleKeyDown}
+                  disabled={this.state.isLoading}
+                  autoFocus
+              />
+            </div>
+            {!this.props.columnDef.hideActions && this.renderActions()}
           </div>
-          {this.renderActions()}
-        </div>
-      </TableCell>
+        </TableCell>
     );
   }
 }
