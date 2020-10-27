@@ -4,6 +4,30 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import MaterialTable from "../src";
 import Typography from "@material-ui/core/Typography";
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+
+class Dropdown extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
+
+  render() {
+    console.log(this.props, 'ok!');
+    return <Select>
+      {this.props.data.map(item => (
+          <MenuItem
+              value={item.value}
+              key={item.value}
+          >
+            {item.label}
+          </MenuItem>
+      ))}
+    </Select>;
+  }
+}
 
 let direction = "ltr";
 // direction = 'rtl';
@@ -443,7 +467,9 @@ class App extends Component {
         title: "Cinsiyet",
         field: "sex",
         disableClick: true,
-        editable: "onAdd",
+        editable: "always",
+        hideActions: true,
+        editComponent: props => <Dropdown {...props} data={[{label: 'Hello', value: 1}]} />
       },
       { title: "Tipi", field: "type", removable: false, editable: "never" },
       { title: "Doğum Yılı", field: "birthDate", type: "date" },
@@ -489,20 +515,20 @@ class App extends Component {
                   onFilterChange={(appliedFilter) => {
                     console.log("selected Filters : ", appliedFilter);
                   }}
-                  // cellEditable={{
-                  //   cellStyle: {},
-                  //   onCellEditApproved: (
-                  //     newValue,
-                  //     oldValue,
-                  //     rowData,
-                  //     columnDef
-                  //   ) => {
-                  //     return new Promise((resolve, reject) => {
-                  //       console.log("newValue: " + newValue);
-                  //       setTimeout(resolve, 4000);
-                  //     });
-                  //   },
-                  // }}
+                  cellEditable={{
+                    cellStyle: {},
+                    onCellEditApproved: (
+                      newValue,
+                      oldValue,
+                      rowData,
+                      columnDef
+                    ) => {
+                      return new Promise((resolve, reject) => {
+                        console.log("newValue: " + newValue);
+                        setTimeout(resolve, 4000);
+                      });
+                    },
+                  }}
                   options={{
                     tableLayout: "fixed",
                     columnResizable: true,

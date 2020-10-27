@@ -223,13 +223,11 @@ class MTableEditField extends React.Component {
         let component = "ok";
 
         if (this.props.columnDef.editComponent) {
-            const {rowData, columnDef} = this.getProps();
             component = <this.props.columnDef.editComponent
                 onChange={value => this.props.onChange(value)}
                 onApprove={value => this.props.onApprove(value)}
                 onCancel={() => this.props.onCancel()}
-                columnDef={columnDef}
-                rowData={rowData}
+                columnDef={this.state.columnDef}
             />
         } else if (this.props.columnDef.lookup) {
             component = this.renderLookupField();
