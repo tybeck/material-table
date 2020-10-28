@@ -224,6 +224,7 @@ class MTableEditField extends React.Component {
 
         if (this.props.columnDef.editComponent) {
             component = <this.props.columnDef.editComponent
+                value={this.props.value === undefined ? "" : this.props.value}
                 onChange={value => this.props.onChange(value)}
                 onApprove={value => this.props.onApprove(value)}
                 onCancel={() => this.props.onCancel()}
