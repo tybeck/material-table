@@ -124,7 +124,9 @@ export class MTableHeader extends React.Component {
                   {...provided.draggableProps}
                   {...provided.dragHandleProps}
                 >
+                  {columnDef.beforeHeaderTitleView && <columnDef.beforeHeaderTitleView columnDef={columnDef} />}
                   {columnDef.title}
+                  {columnDef.afterHeaderTitleView && <columnDef.afterHeaderTitleView columnDef={columnDef} />}
                 </div>
               )}
             </Draggable>

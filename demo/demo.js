@@ -29,6 +29,18 @@ class Dropdown extends Component {
   }
 }
 
+class BeforeHeaderTitleView extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  render() {
+    console.log(this.props, 'ok!');
+    return <span>Hello</span>
+  }
+}
+
 let direction = "ltr";
 // direction = 'rtl';
 const theme = createMuiTheme({
@@ -469,7 +481,8 @@ class App extends Component {
         disableClick: true,
         editable: "always",
         hideActions: true,
-        editComponent: props => <Dropdown {...props} data={[{label: 'Hello', value: 1}]} />
+        editComponent: props => <Dropdown {...props} data={[{label: 'Hello', value: 1}]} />,
+        beforeHeaderTitleView: props => <BeforeHeaderTitleView {...props} />
       },
       { title: "Tipi", field: "type", removable: false, editable: "never" },
       { title: "Doğum Yılı", field: "birthDate", type: "date" },
